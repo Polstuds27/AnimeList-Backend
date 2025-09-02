@@ -1,10 +1,10 @@
 import fetch from "node-fetch";
 
 export default async function handler(req, res) {
-  const { page } = req.query;
+  const { pages } = req.query;
 
   try {
-    const response = await fetch(`https://api.jikan.moe/v4/anime?page=${page}&limit=25`);
+    const response = await fetch(`https://api.jikan.moe/v4/anime?page=${pages}&limit=25`);
     const data = await response.json();
 
     if (!data || !data.data) {
