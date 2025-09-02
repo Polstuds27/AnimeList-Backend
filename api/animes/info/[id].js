@@ -2,13 +2,31 @@ import fetch from "node-fetch";
 import { Client } from "@gradio/client";
 
 async function requestToSummarize(text) {
+    
   const client = await Client.connect("AventIQ-AI/T5-Text-Summarizer");
   const result = await client.predict("/predict", { input_text: text });
   return result.data;
 }
 
 export default async function handler(req, res) {
-  const { id } = req.query;
+  
+    res.setHeader("Access-Control-Allow-Credentials", true);
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader(
+    "Access-Control-Allow-Methods",
+    "GET,OPTIONS,PATCH,DELETE,POST,PUT"
+    );
+    res.setHeader(
+    "Access-Control-Allow-Headers",
+    "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version"
+    );
+
+    if (req.method === "OPTIONS") {
+    res.status(200).end();
+    return;
+    }
+  
+    const { id } = req.query;
 
   try {
     const response = await fetch(`https://api.jikan.moe/v4/anime/${id}`);
