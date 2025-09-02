@@ -7,6 +7,10 @@ export default async function handler(req, res) {
     const response = await fetch(`https://api.jikan.moe/v4/anime?page=${page}&limit=25`);
     const data = await response.json();
 
+    if (!data || !data.data) {
+      return res.status(500).json({ error: "Unexpected API response", details: data });
+    }
+
     const cleaned = data.data.map(anime => ({
       id: anime.mal_id,
       title: anime.title,
